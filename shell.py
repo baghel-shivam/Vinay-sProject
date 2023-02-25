@@ -3,12 +3,27 @@ import csv
 from tkinter import filedialog
 from tkinter import Tk
 import shutil
+import mysql.connector
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_PATH = os.path.join(ROOT_DIR, 'source')
-UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
+# ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+# CONFIG_PATH = os.path.join(ROOT_DIR, 'source')
+# UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
 root = Tk()
 root.withdraw()
+
+#This Function is for Connect DB
+def dbConnect(host=None, user=None, password=None, port=None):
+    try:
+        mydb = mysql.connector.connect(
+            host = str(host),
+            user = str(user),
+            password = str(password),
+            port = str(port),
+            database = 'shivamdb',
+        )
+        return mydb
+    except:
+        return 'Something went wrong'
 
 # This Function is For Create CSV
 def createCsv(headlist, valuelist, filename=None):
@@ -32,7 +47,8 @@ def uploadCsv(sourcePath):
     try:
         destination = filedialog.askdirectory(parent=root)
     except:
-        destination = UPLOAD_PATH
+        print('Upload Destination Not Found')
+        
     shutil.move(source, destination)
     print("Success:")
 
@@ -82,3 +98,19 @@ if __name__ == '__main__':
         if var_opt == 3 or var_opt == '3' or var_opt == 'Exit' or var_opt == 'exit':
             break
         mainCode(var_opt=var_opt)
+        
+        '''
+        # This is for database works
+        print("Please Enter the db details for connection\n\n\n")
+        host = input("Please Enter the Host\n")
+        user = input('Please Enter the User\n')
+        password = input('Please Enter the password\n')
+        port = input('Please Enter the port\n')
+        mydb = dbConnect(host=host,user=user,password=password,port=port)
+        print(mydb)
+        mycursor  = mydb.cursor()
+        mycursor.execute("CREATE TABle newtable (name VARCHAR(300), age VARCHAR(200));")
+        
+        mycursor.close()
+        mydb.close()
+        '''
