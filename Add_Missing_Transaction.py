@@ -3,6 +3,7 @@ import csv
 from tkinter import filedialog
 from tkinter import Tk
 import shutil
+import time
 import sys
 # import mysql.connector
 
@@ -49,6 +50,7 @@ def createCsv(headlist, valuelist, filename=None):
 # This Function is for Upload Function
 def uploadCsv():
     print("Please choose the file")
+    time.sleep(1)
     try:
         filepath = filedialog.askopenfilename(parent=root)
         file_name = str(filepath).split('/')
