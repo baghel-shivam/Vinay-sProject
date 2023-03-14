@@ -48,9 +48,12 @@ def createCsv(headlist, valuelist, filename=None):
 
 # This Function is for Upload Function
 def uploadCsv():
+    print("Please choose the file")
     try:
         filepath = filedialog.askopenfilename(parent=root)
         file_name = str(filepath).split('/')
+        if file_name[0] =='':
+            sys.exit('Error:Source Not Found')
         yesOrNo = input(f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
         if not yesOrNo == '1' or  yesOrNo=='Confirm' or yesOrNo == 'confirm':
             sys.exit('Thanx For Using')
