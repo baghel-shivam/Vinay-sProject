@@ -3,6 +3,7 @@ import csv
 from tkinter import filedialog
 from tkinter import Tk
 import shutil
+import sys
 # import mysql.connector
 
 # DESKTOP_LOCATION = os.path.join(os.environ['USERPROFILE'],'Desktop')
@@ -39,27 +40,31 @@ def createCsv(headlist, valuelist, filename=None):
         writer = csv.writer(file)
         writer.writerow(headlist)
         writer.writerow(valuelist)
-    print("Success:\n\n")
-    uploadOrNot = input('Do you want to upload CSV\n1.Yes 2.No\n')
+    print("Your file has been created successfully:\n\n")
+    uploadOrNot = input('Do you want to upload file ?\n1.Yes 2.No\n')
     if uploadOrNot == 'YES' or uploadOrNot == '1' or uploadOrNot == 'yes' or uploadOrNot == 'Yes' or uploadOrNot == 1:
         uploadCsv()
     file.close()
 
 # This Function is for Upload Function
 def uploadCsv():
-    input('Press Enter for select File')
     try:
         filepath = filedialog.askopenfilename(parent=root)
         file_name = str(filepath).split('/')
-        input(f'You select this file {file_name[-1]}\nPress Enter for Continue')
+        yesOrNo = input(f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
+        if not yesOrNo == '1' or  yesOrNo=='Confirm' or yesOrNo == 'confirm':
+            sys.exit('Thanx For Using')
     except:
-        print('Error:Source Not Found')
+        sys.exit('Error:Source Not Found')
     fileName = input('Please Enter the Folder Name\n')
+    if '/' in fileName:
+        print("\n'/' is not allowed use '-' instead")
+        fileName = input('Please Enter the Folder Name\n')
     actualUploadPath = os.path.join(UPLOAD_PATH,fileName)
     if not os.path.exists(actualUploadPath):
         os.makedirs(actualUploadPath)
     shutil.move(filepath, actualUploadPath)
-    print("Success:\n\n")
+    print(f"Your file has been placed to this folder 'destination/{fileName}':\n\n")
 
 #This Function is For Delete Contribution
 def deleteCsv():
@@ -88,14 +93,14 @@ def deleteCsv():
         writer = csv.writer(file)
         writer.writerow(writeRow)
         writer.writerow(id)
-    print("Success:\n\n")
+    print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
 
 def mainCode(var_opt):
     if var_opt == 1 or var_opt == '1':
         is_confirm = input(
             "You choose for Add Missing Transaction opration?\nYes or No\n")
-        if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 1 or is_confirm == '1':
+        if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
             createOrupdate = input("1.Create CSV and 2.Upload CSV\n")
 
             # Create Csv
