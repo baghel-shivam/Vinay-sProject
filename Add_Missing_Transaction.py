@@ -30,8 +30,7 @@ root.withdraw()
 #     except:
 #         return 'Something went wrong'
 
-# This Function is For Create CSV
-
+# This Function is For Create CSV --------------------
 def createCsv(headlist, valuelist, filename=None):
     if filename is None or filename == '':
         filename = 'newcsv'
@@ -47,7 +46,7 @@ def createCsv(headlist, valuelist, filename=None):
         uploadCsv()
     file.close()
 
-# This Function is for Upload Function
+# This Function is for Upload File -----------------------
 def uploadCsv():
     print("Please choose the file")
     time.sleep(1)
@@ -71,7 +70,7 @@ def uploadCsv():
     shutil.move(filepath, actualUploadPath)
     print(f"Your file has been placed to this folder 'destination/{fileName}':\n\n")
 
-#This Function is For Delete Contribution
+#This Function is For Delete Contribution ------------------------
 def deleteCsv():
     head = ['Contribution Id', 'Email Id']
     finalList = []
@@ -101,30 +100,69 @@ def deleteCsv():
     print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
 
+#This Funtion is for Create Csv file from existing File ---------------------
+def createCSVFromFile():
+    print('Please Upload CSV File\n')
+    time.sleep(1)
+    try:
+        filepath = filedialog.askopenfilename(parent=root)
+        file_name = str(filepath).split('/')
+        if file_name[0] =='':
+            sys.exit('Error:Source Not Found')
+        yesOrNo = input(f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
+        if not yesOrNo == '1' or  yesOrNo=='Confirm' or yesOrNo == 'confirm':
+            sys.exit('Thank You For Using')
+    except:
+        sys.exit('Error:Source Not Found')
+
+    #read_csv Here
+    try:
+        with open(filepath,'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+    except:
+        sys.exit('Error:Please Select Correct CSV File Formate')
+    
+    #write_csv here
+    filename = input('Please Enter File Name\n')
+    try:
+        with open(str(os.path.join(CREATE_PATH,filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+        print("Your file has been created successfully:\n\n")
+    except:
+        sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
+
 def mainCode(var_opt):
     if var_opt == 1 or var_opt == '1':
         is_confirm = input(
             "You choose for Add Missing Transaction opration?\nYes or No\n")
         if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
-            createOrupdate = input("1.Create CSV and 2.Upload CSV\n")
+            createOrupdate = input("1.Create CSV and 2.Upload CSV 3.Create CSV with Existing file\n")
 
-            # Create Csv
+            #Create_Csv
             if createOrupdate == 1 or createOrupdate == '1' or createOrupdate == 'create' or createOrupdate == 'Create':
                 head = ['Account Id', 'Request Id', 'Request Date', 'From Account',
                         'Asset Source', 'Symbol', 'Quantity', 'Approx Value']
                 value = [input(f'Please enter {item} value\n')
                          for item in head]
-                filename = input('\n\n\nPlease Enter the CSV File name\n')
+                filename = input('\n\nPlease Enter the CSV File name\n')
                 createCsv(headlist=head, valuelist=value, filename=filename)
                 
-            # Upload Csv
+            #Upload_Csv
             elif createOrupdate == 2 or createOrupdate == '2' or createOrupdate == 'Upload Csv' or createOrupdate == 'upload':
                 uploadCsv()
 
+            #Create_Csv_with_New_File
+            elif createOrupdate == 3 or createOrupdate == '3':
+                createCSVFromFile()
+
+            else:
+                print('Something went wrong,Please try again.')
         elif is_confirm == 'No' or is_confirm == 'no' or is_confirm == 2 or is_confirm == '2':
             print('Thank you For Using')
         else:
-            print('Please Try Again')
+            print('Something went wrong,Please try again.')
     
     # Delete CSV
     elif var_opt == 2 or var_opt == '2':
