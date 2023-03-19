@@ -16,19 +16,6 @@ DELETE_PATH = os.path.join(ROOT_DIR, 'deleteContribution')
 root = Tk()
 root.withdraw()
 
-#This Function is for Connect DB
-# def dbConnect(host=None, user=None, password=None, port=None):
-#     try:
-#         mydb = mysql.connector.connect(
-#             host = str(host),
-#             user = str(user),
-#             password = str(password),
-#             port = str(port),
-#             database = 'shivamdb',
-#         )
-#         return mydb
-#     except:
-#         return 'Something went wrong'
 
 # This Function is For Create CSV --------------------
 def createCsv(headlist, valuelist, filename=None):
@@ -124,7 +111,7 @@ def createCSVFromFile():
         sys.exit('Error:Please Select Correct CSV File Formate')
     
     #write_csv here
-    filename = input('Please Enter File Name\n')
+    filename = input('Please Enter The new CSV File Name\n')
     try:
         with open(str(os.path.join(CREATE_PATH,filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
             writer = csv.writer(file)
@@ -138,7 +125,7 @@ def mainCode(var_opt):
         is_confirm = input(
             "You choose for Add Missing Transaction opration?\nYes or No\n")
         if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
-            createOrupdate = input("1.Create CSV and 2.Upload CSV 3.Create CSV with Existing file\n")
+            createOrupdate = input("1.Create CSV and   2.Upload CSV   3.Create CSV From REP provided file\n")
 
             #Create_Csv
             if createOrupdate == 1 or createOrupdate == '1' or createOrupdate == 'create' or createOrupdate == 'Create':
