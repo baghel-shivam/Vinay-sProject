@@ -94,8 +94,8 @@ def createCSVFromFile():
     try:
         filepath = filedialog.askopenfilename(parent=root)
         file_name = str(filepath).split('/')
-        if file_name[0] =='':
-            sys.exit('Error:Source Not Found')
+        if len(file_name[-1]) == 2 or len(file_name[-1]) == '2': #Check if file selected or not
+            raise 'File Not Selected'
         yesOrNo = input(f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
         if not yesOrNo == '1' or  yesOrNo=='Confirm' or yesOrNo == 'confirm':
             sys.exit('Thank You For Using')
@@ -115,7 +115,9 @@ def createCSVFromFile():
     try:
         with open(str(os.path.join(CREATE_PATH,filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
             writer = csv.writer(file)
-            writer.writerows(data)
+            for row in data:
+                if any(row):  #Check here if row is blank or not
+                    writer.writerow(row)
         print("Your file has been created successfully:\n\n")
     except:
         sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
