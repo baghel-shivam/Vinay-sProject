@@ -87,27 +87,8 @@ def deleteCsv():
     print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
 
-
-# Create csv File recursivelly when file uploaded
-def createCSV_recurssively(filename,header,data,requestId,recursiveCounter):
-        filename = filename + str(recursiveCounter)
-        with open(str(os.path.join(CREATE_PATH,filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
-            writer = csv.writer(file)
-            writer.writerow(header)
-            counter = 0
-            requestId = requestId
-            for row in data:
-                if any(row) and counter > 0:  #Check here if row is blank or not and skip the first row
-                    if row[1] == requestId:
-                        writer.writerow(row)
-                counter += 1
-
 #This Funtion is for Create Csv file from existing File ---------------------
 def createCSVFromFile():
-    contrId  = input('Please Enter contr ID\n')
-    nameOfRep = input('Please Enter the name of REP\n')
-    email = input('Please Enter the email\n')
-    header = ['Add Missing Transcation',f'update contr ID {contrId}',nameOfRep,email]
     print('Please Upload CSV File\n')
     time.sleep(1)
     try:
@@ -134,30 +115,12 @@ def createCSVFromFile():
     try:
         with open(str(os.path.join(CREATE_PATH,filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
             writer = csv.writer(file)
-            writer.writerow(header)
-            counter = 0
-            recursiveCounter = 1
-            # requestId = None
-            requestId = contrId 
-            uniqueRequestIds = []
             for row in data:
-                if counter > 0 and requestId is None:
-                    requestId = row[1]
-                if any(row) and counter > 0:  #Check here if row is blank or not and skip the first row
-                    if row[1] == requestId:
-                        writer.writerow(row)
-                    else:
-                        if row[1] not in uniqueRequestIds:
-                            header = ['Add Missing Transcation',f'update contr ID {row[1]}',nameOfRep,email]
-                            createCSV_recurssively(filename=filename, header=header,data=data,requestId=row[1],recursiveCounter = recursiveCounter)
-                        uniqueRequestIds.append(row[1])
-                        recursiveCounter += 1
-                counter += 1
+                if any(row):  #Check here if row is blank or not
+                    writer.writerow(row)
         print("Your file has been created successfully:\n\n")
     except:
         sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
-
-    #**************************  Main Code started from here ******************   
 
 def mainCode(var_opt):
     if var_opt == 1 or var_opt == '1':
