@@ -17,6 +17,14 @@ root = Tk()
 root.withdraw()
 
 
+def continue_or_not():
+    is_confirm = input('Do You want to continue ?\nYes or No\n')
+    if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 1:
+        pass
+    elif is_confirm == 'No' or is_confirm == 'no' or 2:
+        sys.exit('Thank you for using this software')
+  
+
 # This Function is For Create CSV --------------------
 def createCsv(headlist, valuelist, filename=None):
     if filename is None or filename == '':
@@ -34,8 +42,6 @@ def createCsv(headlist, valuelist, filename=None):
     file.close()
 
 # This Function is for Upload File -----------------------
-
-
 def uploadCsv():
     print("Please choose the file")
     time.sleep(1)
@@ -60,12 +66,13 @@ def uploadCsv():
     shutil.move(filepath, actualUploadPath)
     print(
         f"Your file has been placed to this folder 'destination/{fileName}':\n\n")
+    continue_or_not()
 
 # This Function is For Delete Contribution ------------------------
 
 
 def deleteCsv():
-    head = ['Contribution Id', 'Email Id']
+    head = ['Contribution Id', 'Name', 'Email Id']
     finalList = []
     id = []
     writeRow = ['Delete Contribution']
@@ -81,7 +88,7 @@ def deleteCsv():
             writeRow.append(removeContrId)
         else:
             writeRow.append(value)
-    filename = input('\n\n\nPlease Enter the CSV File name\n')
+    filename = input('\n\n\nPlease enter the ticket id\n')
     if filename is None or filename == '':
         filename = 'newcsv'
     if not os.path.exists(DELETE_PATH):
@@ -92,7 +99,7 @@ def deleteCsv():
         writer.writerow(id)
     print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
-
+    continue_or_not()
 
 # Create csv File recursivelly when file uploaded
 def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
@@ -107,14 +114,14 @@ def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
                 if row[1] == requestId:
                     writer.writerow(row)
             counter += 1
+    continue_or_not()
 
 # This Funtion is for Create Csv file from existing File ---------------------
-
 
 def createCSVFromFile():
     nameOfRep = input('Please Enter the name of REP\n')
     email = input('Please Enter the email\n')
-    print('Please Select the sheet provided by the REP \n')
+    print('Please select the sheet provided by the REP \n')
     time.sleep(1)
     try:
         filepath = filedialog.askopenfilename(parent=root)
@@ -140,8 +147,7 @@ def createCSVFromFile():
 
     # write_csv here
     filename = input('Please Enter The new CSV File Name\n')
-    yes = True
-    if yes:
+    try:
         counter = 0
         recursiveCounter = 1
         uniqueRequestIds = []
@@ -156,8 +162,10 @@ def createCSVFromFile():
                 uniqueRequestIds.append(row[1])
             counter += 1
         print("Your file has been created successfully:\n\n")
-    else:
+    except:
         sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
+
+    continue_or_not()
 
     # **************************  Main Code started from here ******************
 
@@ -168,7 +176,7 @@ def mainCode(var_opt):
             "You choose for Add Missing Transaction opration?\nYes or No\n")
         if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
             createOrupdate = input(
-                "1.Create CSV and   2.Upload CSV   3.Create CSV From REP provided file\n")
+                "1.Create CSV    2.Upload CSV    3.Create CSV From REP provided file\n")
 
             # Create_Csv
             if createOrupdate == 1 or createOrupdate == '1' or createOrupdate == 'create' or createOrupdate == 'Create':
@@ -207,8 +215,7 @@ def mainCode(var_opt):
 if __name__ == '__main__':
     while True:
         print("Choose any one number for oprations")
-        var_opt = input(
-            '0.Exit\n1.Add Missing Transaction \n2.Delete Contribution\n')
+        var_opt = input('0.Exit\n1.Add Missing Transaction \n2.Delete Contribution\n')
         if var_opt == 0 or var_opt == '0' or var_opt == 'Exit' or var_opt == 'exit':
             break
         mainCode(var_opt=var_opt)
