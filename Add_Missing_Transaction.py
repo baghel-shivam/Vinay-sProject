@@ -12,6 +12,7 @@ import sys
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CREATE_PATH = os.path.join(ROOT_DIR, 'Source')
 UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
+LIQUIDATION_PATH = os.path.join(ROOT_DIR, 'liquidation_matching')
 DELETE_PATH = os.path.join(ROOT_DIR, 'deleteContribution')
 root = Tk()
 root.withdraw()
@@ -74,6 +75,25 @@ def uploadCsv():
 def deleteCsv():
     head = ['Contribution Id', 'Name', 'Email Id']
     finalList = []
+    head = ['Contribution Id', 'Name', 'Email Id']
+    finalList = []
+    id = []
+    writeRow = ['Delete Contribution']
+    removeContrId = 'remove contr ID     '
+    first = True
+    for headName in head:
+        value = input(f'Please enter {headName} value\n')
+        finalList.append(value)
+        if first:
+            first = False
+            removeContrId += value
+            id.append(value)
+            writeRow.append(removeContrId)
+        else:
+            writeRow.append(value)
+    filename = input('\n\n\nPlease enter the ticket id\n')
+    if filename is None or filename == '':
+        filename = 'newcsv'
     id = []
     writeRow = ['Delete Contribution']
     removeContrId = 'remove contr ID     '
@@ -170,13 +190,77 @@ def createCSVFromFile():
     # **************************  Main Code started from here ******************
 
 
+#This function is for liquidation matching-----------------------
+def liquidation_matching():
+    user_name = input('Please enter the username \n')
+    email = input('Please enter the email \n')
+    ticket_id = input('Please enter the ticket id \n')
+    print("Please choose the file")
+    time.sleep(1)
+    try:
+        filepath = filedialog.askopenfilename(parent=root)
+        try:
+            file_name = str(filepath).split('/')
+            if file_name[0] == '':
+                sys.exit('Error:Source Not Found')
+            yesOrNo = input(
+                f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
+            if not yesOrNo == '1' or yesOrNo == 'Confirm' or yesOrNo == 'confirm':
+                sys.exit('Thanx For Using')
+        except:
+            pass
+    except:
+        sys.exit('Error:Source Not Found')
+
+     # read_csv Here
+    try:
+        with open(filepath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+    except:
+        sys.exit('Error:Please Select Correct CSV File Formate')
+    
+    actualUploadPath = os.path.join(LIQUIDATION_PATH)
+    if not os.path.exists(actualUploadPath):
+        os.makedirs(actualUploadPath)
+
+    try:
+        with open(os.path.join(str(actualUploadPath),ticket_id) +'.csv', mode='w', newline='', encoding='cp1252') as file:
+            writer = csv.writer(file)
+            header = ['Liquidation Matching', 'liquidation matching', user_name, email]
+            writer.writerow(header)
+
+            counter = 0
+            for row in data:
+                if any(row) and counter > 0: # Check here if row is blank or not and skip the first row
+                    writer.writerow(row)
+                counter += 1
+            print("Your file has been successfully created in the 'liquidation_matching folder'\n\n")
+    except:
+        sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
+
+    continue_or_not()
+                
+                    
+                    
+                
+
+
+
+    
+    
+    # actualUploadPath = os.path.join(LIQUIDATION_PATH, ticket_id)
+    # if not os.path.exists(actualUploadPath):
+    #     os.makedirs(actualUploadPath)
+
+
 def mainCode(var_opt):
     if var_opt == 1 or var_opt == '1':
         is_confirm = input(
             "You choose for Add Missing Transaction opration?\nYes or No\n")
         if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
             createOrupdate = input(
-                "1.Create CSV    2.Upload CSV    3.Create CSV From REP provided file\n")
+                "1.Create CSV    2.Upload CSV    3.Create CSV From REP provided file ")
 
             # Create_Csv
             if createOrupdate == 1 or createOrupdate == '1' or createOrupdate == 'create' or createOrupdate == 'Create':
@@ -194,7 +278,6 @@ def mainCode(var_opt):
             # Create_Csv_with_New_File
             elif createOrupdate == 3 or createOrupdate == '3':
                 createCSVFromFile()
-
             else:
                 print('Something went wrong,Please try again.')
         elif is_confirm == 'No' or is_confirm == 'no' or is_confirm == 2 or is_confirm == '2':
@@ -211,11 +294,20 @@ def mainCode(var_opt):
         else:
             print('Please Try Again')
 
+    # Liquidation Mathcing
+    elif var_opt == 3 or var_opt == '3':
+        is_confirm = input(
+            "You choose for Liquidation Matching?\nYes or No\n")
+        if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 1 or is_confirm == '1':
+            liquidation_matching()
+        else:
+            print('Please Try Again')
+
 
 if __name__ == '__main__':
     while True:
         print("Choose any one number for oprations")
-        var_opt = input('0.Exit\n1.Add Missing Transaction \n2.Delete Contribution\n')
+        var_opt = input('0.Exit\n1.Add Missing Transaction \n2.Delete Contribution\n3.Liquidation Matching\n')
         if var_opt == 0 or var_opt == '0' or var_opt == 'Exit' or var_opt == 'exit':
             break
         mainCode(var_opt=var_opt)
