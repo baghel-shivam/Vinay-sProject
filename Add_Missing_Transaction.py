@@ -28,7 +28,7 @@ def excel_to_csv(excel_file_path, csv_file_path):
         df.to_csv(csv_file_path, index=False)
         return csv_file_path
     except Exception as e:
-        sys.exit('Error:Something went wrong while open csv file')
+        sys.exit('Error:Something went wrong while opening csv file')
 
 
 def continue_or_not():
@@ -256,18 +256,6 @@ def liquidation_matching():
         sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
 
     continue_or_not()
-                
-                    
-                    
-                
-
-
-
-    
-    
-    # actualUploadPath = os.path.join(LIQUIDATION_PATH, ticket_id)
-    # if not os.path.exists(actualUploadPath):
-    #     os.makedirs(actualUploadPath)
 
 
 def mainCode(var_opt):
