@@ -5,6 +5,9 @@ from tkinter import Tk
 import shutil
 import time
 import sys
+import pandas as pd
+
+
 # import mysql.connector
 
 # DESKTOP_LOCATION = os.path.join(os.environ['USERPROFILE'],'Desktop')
@@ -16,6 +19,16 @@ LIQUIDATION_PATH = os.path.join(ROOT_DIR, 'liquidation_matching')
 DELETE_PATH = os.path.join(ROOT_DIR, 'deleteContribution')
 root = Tk()
 root.withdraw()
+
+
+#This function if for convert excel file into csv files
+def excel_to_csv(excel_file_path, csv_file_path):
+    try:
+        df = pd.read_excel(excel_file_path, engine='openpyxl')
+        df.to_csv(csv_file_path, index=False)
+        return csv_file_path
+    except Exception as e:
+        sys.exit('Error:Something went wrong while open csv file')
 
 
 def continue_or_not():
@@ -212,13 +225,16 @@ def liquidation_matching():
     except:
         sys.exit('Error:Source Not Found')
 
-     # read_csv Here
+    #read_csv Here
+    if not str(filepath).endswith('.csv'):
+        filepath =  excel_to_csv(filepath,filepath)
+
     try:
         with open(filepath, 'r') as file:
             reader = csv.reader(file)
             data = list(reader)
     except:
-        sys.exit('Error:Please Select Correct CSV File Formate')
+        sys.exit('Error:Something went wrong maybe slected file formate is not supported.')
     
     actualUploadPath = os.path.join(LIQUIDATION_PATH)
     if not os.path.exists(actualUploadPath):
