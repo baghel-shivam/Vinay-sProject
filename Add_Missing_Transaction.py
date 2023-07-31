@@ -21,7 +21,6 @@ CREATE_PATH = os.path.join(ROOT_DIR, 'Source')
 UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
 DELETE_PATH = os.path.join(ROOT_DIR, 'deleteContribution')
 LIQUIDATION_PATH = os.path.join(UPLOAD_PATH, str(TODAY))
-print(LIQUIDATION_PATH)
 root = Tk()
 root.withdraw()
 
