@@ -5,7 +5,8 @@ from tkinter import Tk
 import shutil
 import time
 import sys
-import pandas as pd
+# import pandas as pd
+import openpyxl
 
 
 # import mysql.connector
@@ -22,14 +23,26 @@ root.withdraw()
 
 
 #This function if for convert excel file into csv files
+# def excel_to_csv(excel_file_path, csv_file_path):
+#     try:
+#         df = pd.read_excel(excel_file_path, engine='openpyxl')
+#         df.to_csv(csv_file_path, index=False)
+#         return csv_file_path
+#     except Exception as e:
+#         sys.exit('Error:Something went wrong while opening csv file')
+
 def excel_to_csv(excel_file_path, csv_file_path):
     try:
-        df = pd.read_excel(excel_file_path, engine='openpyxl')
-        df.to_csv(csv_file_path, index=False)
+        workbook = openpyxl.load_workbook(excel_file_path)
+        sheet = workbook.active
+        with open(csv_file_path, mode='w', newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            for row in sheet.iter_rows(values_only=True):
+                writer.writerow(row)
+        workbook.close()
         return csv_file_path
     except Exception as e:
-        sys.exit('Error:Something went wrong while opening csv file')
-
+        print(f"Error occurred: {e}")
 
 def continue_or_not():
     is_confirm = input('Do You want to continue ?\nYes or No\n')
