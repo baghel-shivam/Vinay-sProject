@@ -5,19 +5,23 @@ from tkinter import Tk
 import shutil
 import time
 import sys
+from datetime import date
+
 # import pandas as pd
-import openpyxl
+# import openpyxl
 
 
 # import mysql.connector
 
 # DESKTOP_LOCATION = os.path.join(os.environ['USERPROFILE'],'Desktop')
 
+TODAY = date.today()
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CREATE_PATH = os.path.join(ROOT_DIR, 'Source')
 UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
-LIQUIDATION_PATH = os.path.join(ROOT_DIR, 'liquidation_matching')
 DELETE_PATH = os.path.join(ROOT_DIR, 'deleteContribution')
+LIQUIDATION_PATH = os.path.join(UPLOAD_PATH, str(TODAY))
+print(LIQUIDATION_PATH)
 root = Tk()
 root.withdraw()
 
@@ -31,6 +35,7 @@ root.withdraw()
 #     except Exception as e:
 #         sys.exit('Error:Something went wrong while opening csv file')
 
+'''
 def excel_to_csv(excel_file_path, csv_file_path):
     try:
         workbook = openpyxl.load_workbook(excel_file_path)
@@ -43,6 +48,7 @@ def excel_to_csv(excel_file_path, csv_file_path):
         return csv_file_path
     except Exception as e:
         print(f"Error occurred: {e}")
+'''
 
 def continue_or_not():
     is_confirm = input('Do You want to continue ?\nYes or No\n')
@@ -239,8 +245,11 @@ def liquidation_matching():
         sys.exit('Error:Source Not Found')
 
     #read_csv Here
+    
+    '''
     if not str(filepath).endswith('.csv'):
         filepath =  excel_to_csv(filepath,filepath)
+    '''
 
     try:
         with open(filepath, 'r') as file:
@@ -252,7 +261,6 @@ def liquidation_matching():
     actualUploadPath = os.path.join(LIQUIDATION_PATH)
     if not os.path.exists(actualUploadPath):
         os.makedirs(actualUploadPath)
-
     try:
         with open(os.path.join(str(actualUploadPath),ticket_id) +'.csv', mode='w', newline='', encoding='cp1252') as file:
             writer = csv.writer(file)
@@ -264,7 +272,7 @@ def liquidation_matching():
                 if any(row) and counter > 0: # Check here if row is blank or not and skip the first row
                     writer.writerow(row)
                 counter += 1
-            print("Your file has been successfully created in the 'liquidation_matching folder'\n\n")
+            print(f"Your file has been successfully created in the {actualUploadPath} folder'\n\n")
     except:
         sys.exit("Error:Something Went Wrong,Can't write new csv file\n\n")
 
