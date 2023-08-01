@@ -16,7 +16,7 @@ from datetime import date
 # DESKTOP_LOCATION = os.path.join(os.environ['USERPROFILE'],'Desktop')
 
 TODAY = date.today()
-TODAY = TODAY.strftime("%d-%m-%Y")
+TODAY = TODAY.strftime("%m-%d-%Y")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CREATE_PATH = os.path.join(ROOT_DIR, 'Source')
 UPLOAD_PATH = os.path.join(ROOT_DIR, 'destination')
