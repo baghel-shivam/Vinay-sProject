@@ -156,7 +156,7 @@ def deleteCsv():
 # Create csv File recursivelly when file uploaded
 def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
     filename = filename + '-' + str(recursiveCounter)
-    with open(str(os.path.join(CREATE_PATH, filename))+'.csv', mode='w', newline='', encoding='cp1252') as file:
+    with open(str(os.path.join(CREATE_PATH, filename))+'.csv', mode='w', newline='\n', encoding='cp1252') as file:
         writer = csv.writer(file)
         writer.writerow(header)
         counter = 0
@@ -262,7 +262,7 @@ def liquidation_matching():
     if not os.path.exists(actualUploadPath):
         os.makedirs(actualUploadPath)
     try:
-        with open(os.path.join(str(actualUploadPath),ticket_id) +'.csv', mode='w', newline='', encoding='cp1252') as file:
+        with open(os.path.join(str(actualUploadPath),ticket_id) +'.csv', mode='w', newline='\n', encoding='cp1252') as file:
             writer = csv.writer(file)
             header = ['Liquidation Matching', 'liquidation matching', user_name, email]
             writer.writerow(header)
