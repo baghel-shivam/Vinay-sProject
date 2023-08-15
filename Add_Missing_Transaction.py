@@ -81,7 +81,7 @@ def uploadCsv():
     try:
         filepath = filedialog.askopenfilename(parent=root)
         file_name = str(filepath).split('/')
-        if file_name[0] == '':
+        if file_name[-1] == '':
             sys.exit('Error:Source Not Found')
         yesOrNo = input(
             f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
@@ -105,9 +105,7 @@ def uploadCsv():
 
 
 def deleteCsv():
-    head = ['Contribution Id', 'Name', 'Email Id']
-    finalList = []
-    head = ['Contribution Id', 'Name', 'Email Id']
+    head = ['Contribution Id', 'Email Id']
     finalList = []
     id = []
     writeRow = ['Delete Contribution']
@@ -122,25 +120,8 @@ def deleteCsv():
             id.append(value)
             writeRow.append(removeContrId)
         else:
-            writeRow.append(value)
-    filename = input('\n\n\nPlease enter the ticket id\n')
-    if filename is None or filename == '':
-        filename = 'newcsv'
-    id = []
-    writeRow = ['Delete Contribution']
-    removeContrId = 'remove contr ID     '
-    first = True
-    for headName in head:
-        value = input(f'Please enter {headName} value\n')
-        finalList.append(value)
-        if first:
-            first = False
-            removeContrId += value
-            id.append(value)
-            writeRow.append(removeContrId)
-        else:
-            writeRow.append(value)
-    filename = input('\n\n\nPlease enter the ticket id\n')
+            writeRow.append(value)     
+    filename = input('\n\n\nPlease Enter the CSV File name\n')
     if filename is None or filename == '':
         filename = 'newcsv'
     if not os.path.exists(DELETE_PATH):
@@ -152,6 +133,7 @@ def deleteCsv():
     print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
     continue_or_not()
+
 
 # Create csv File recursivelly when file uploaded
 def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
@@ -166,7 +148,6 @@ def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
                 if row[1] == requestId:
                     writer.writerow(row)
             counter += 1
-    continue_or_not()
 
 # This Funtion is for Create Csv file from existing File ---------------------
 
@@ -233,7 +214,7 @@ def liquidation_matching():
         filepath = filedialog.askopenfilename(parent=root)
         try:
             file_name = str(filepath).split('/')
-            if file_name[0] == '':
+            if file_name[-1] == '':
                 sys.exit('Error:Source Not Found')
             yesOrNo = input(
                 f'You selected this file "{file_name[-1]}"\n1.Confirm and 2.Cancel\n')
@@ -285,7 +266,7 @@ def mainCode(var_opt):
             "You choose for Add Missing Transaction opration?\nYes or No\n")
         if is_confirm == 'Yes' or is_confirm == 'yes' or is_confirm == 'YES' or is_confirm == 1 or is_confirm == '1':
             createOrupdate = input(
-                "1.Create CSV    2.Upload CSV    3.Create CSV From REP provided file ")
+                "1.Create CSV    2.Upload CSV    3.Create CSV From REP provided file \n")
 
             # Create_Csv
             if createOrupdate == 1 or createOrupdate == '1' or createOrupdate == 'create' or createOrupdate == 'Create':
