@@ -105,7 +105,7 @@ def uploadCsv():
 
 
 def deleteCsv():
-    head = ['Contribution Id', 'Email Id']
+    head = ['Contribution Id', 'Name', 'Email Id']
     finalList = []
     id = []
     writeRow = ['Delete Contribution']
@@ -120,8 +120,8 @@ def deleteCsv():
             id.append(value)
             writeRow.append(removeContrId)
         else:
-            writeRow.append(value)     
-    filename = input('\n\n\nPlease Enter the CSV File name\n')
+            writeRow.append(value)
+    filename = input('\n\n\nPlease enter the ticket id\n')
     if filename is None or filename == '':
         filename = 'newcsv'
     if not os.path.exists(DELETE_PATH):
@@ -133,8 +133,6 @@ def deleteCsv():
     print("Your file has been placed to the 'deleteContribution' folder:\n\n")
     file.close()
     continue_or_not()
-
-
 # Create csv File recursivelly when file uploaded
 def createCSV_recurssively(filename, header, data, requestId, recursiveCounter):
     filename = filename + '-' + str(recursiveCounter)
